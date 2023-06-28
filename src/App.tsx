@@ -2,10 +2,6 @@ import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
-  useEffect(() => {
-    showUnis();
-  }, []);
-
   const [dataArray, setDataArray] = useState<any[]>([]);
   const [value, setValue] = useState({ value: ""});
   let updatedCountry = value.value;
@@ -14,20 +10,26 @@ function App() {
 
   const fetchApi = () => {
     updatedCountry = value.value;
-    fetch(`http://universities.hipolabs.com/search?country=${updatedCountry}`)
+    if(value.value === ""){
+      updatedCountry = "Argentina";
+    }
+    try {
+      fetch(`http://universities.hipolabs.com/search?country=${updatedCountry}`)
       .then(response => response.json())
       .then(data => {
         setDataArray(data);
         showUnis();
       })
-      .then(data => {
-        console.log(data)
-      })
-      .catch(error => {
+    }
+      catch (error) {
         console.error("Error occured while fetching json data from Web API:", error);
-      })
+      }
       
   }
+
+  useEffect(() => {
+    showUnis();
+  }, [dataArray]);
 
 
   const showUnis = () => {
@@ -41,7 +43,7 @@ function App() {
         uniNumber = i;
         universityName = dataArray[i].name;
         universityWebsite = dataArray[i].web_pages[0];
-        console.log(uniNumber + " " + universityName + " " + universityWebsite);
+        //console.log(uniNumber + " " + universityName + " " + universityWebsite);
         tableBody.innerHTML += "<tr><td>" + uniNumber + "</td><td>" + universityName + "</td><td>" + universityWebsite + "</td></tr>";
       }
     }
@@ -88,17 +90,18 @@ function App() {
           <option value="Philippines">Philippines</option>
           <option value="Russian Federation">Russia</option>
           <option value="Singapore">Singapore</option>
-          <option value="South Afrika">South Afrika</option>
           <option value="Spain">Spain</option>
           <option value="Sweden">Sweden</option>
           <option value="Switzerland">Switzerland</option>
           <option value="Taiwan">Taiwan</option>
           <option value="Thailand">Thailand</option>
           <option value="United Kingdom">United Kingdom</option>
-          <option value="United States">USA</option>
+          {/* <option value="United States">USA</option> */}
         </select>
       </form>
-      <button onClick={() => { fetchApi(); }}>Show Universities</button>
+      <div className="buttonDiv">
+        <button onClick={() => { fetchApi(); }}>Show Universities</button>
+      </div>
       <table>
         <thead>
           <tr>

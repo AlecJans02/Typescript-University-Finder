@@ -1,0 +1,73 @@
+.Main {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.Content {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
+
+button {
+    text-align: center;
+    height: 50px;
+    width: 200px;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+td {
+    text-align: center;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #dddddd;
+}
+
+
+th {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+thead {
+    background-color: rgb(71, 190, 135);
+    color: #ffffff;
+}
+
+label {
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding-right: 20px;
+}
+
+select {
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    height: 30px;
+    width: 140px;
+    text-align: center;
+    font-weight: bold;
+    border-color: #f3f3f3;
+}
+
+
+
