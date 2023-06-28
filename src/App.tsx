@@ -1,10 +1,16 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    showUnis();
+  }, []);
+
   const [dataArray, setDataArray] = useState<any[]>([]);
   const [value, setValue] = useState({ value: ""});
   let updatedCountry = value.value;
+  const tableBodyRef = useRef<HTMLTableSectionElement>(null);
+  
 
   const fetchApi = () => {
     updatedCountry = value.value;
@@ -12,24 +18,34 @@ function App() {
       .then(response => response.json())
       .then(data => {
         setDataArray(data);
+        showUnis();
       })
       .then(data => {
         console.log(data)
-        showUnis();
+      })
+      .catch(error => {
+        console.error("Error occured while fetching json data from Web API:", error);
       })
       
   }
+
 
   const showUnis = () => {
     let universityName : any = "";
     let universityWebsite : any = "";  
     let uniNumber : number = 0;
-    for(let i = 0; i < dataArray.length; i++) {
-      uniNumber = i;
-      universityName = dataArray[i].name;
-      universityWebsite = dataArray[i].web_pages[0];
-      console.log(uniNumber + " " + universityName + " " + universityWebsite);
+    if (tableBodyRef.current) {
+      const tableBody = tableBodyRef.current;
+      tableBody.innerHTML = "";
+      for (let i = 0; i < dataArray.length; i++) {
+        uniNumber = i;
+        universityName = dataArray[i].name;
+        universityWebsite = dataArray[i].web_pages[0];
+        console.log(uniNumber + " " + universityName + " " + universityWebsite);
+        tableBody.innerHTML += "<tr><td>" + uniNumber + "</td><td>" + universityName + "</td><td>" + universityWebsite + "</td></tr>";
+      }
     }
+    
   }
 
 
@@ -82,8 +98,19 @@ function App() {
           <option value="United States">USA</option>
         </select>
       </form>
-      <button onClick={() => {fetchApi; showUnis}}>Show Universities</button>
-      <button onClick={fetchApi}>run api</button>
+      <button onClick={() => { fetchApi(); }}>Show Universities</button>
+      <table>
+        <thead>
+          <tr>
+            <th>University #</th>
+            <th>University Name</th>
+            <th>University Website</th>
+          </tr>
+        </thead>
+        <tbody ref={tableBodyRef} className="tableBody">
+          
+        </tbody>
+      </table>
       </div>
     </div>
     </>
